@@ -1,6 +1,7 @@
 package miniproject.blog.dto;
 
 import lombok.Getter;
+import miniproject.blog.domain.Article;
 
 @Getter
 public class ArticleResponse {
@@ -9,8 +10,8 @@ public class ArticleResponse {
     private final String content;
 
 
-    public ArticleResponse(String title, String content) {
-        this.title = title;
-        this.content = content;
+    public ArticleResponse(Article article) {
+        this.title = article.getTitle();
+        this.content = article.getContent();
     }
 }

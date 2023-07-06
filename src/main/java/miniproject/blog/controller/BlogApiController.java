@@ -3,12 +3,16 @@ package miniproject.blog.controller;
 import lombok.RequiredArgsConstructor;
 import miniproject.blog.domain.Article;
 import miniproject.blog.dto.AddArticleRequest;
+import miniproject.blog.dto.ArticleResponse;
 import miniproject.blog.service.BlogService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -23,5 +27,17 @@ public class BlogApiController {
                 .body(savedArticle);
 
     }
+
+    @GetMapping("/api/articles")
+    public ResponseEntity<List<ArticleResponse>> findAllArticles(){
+        List<ArticleResponse> articles = blogService.findAll()
+                .stream()
+                .map(ArticleResponse::new)
+                .toList();
+
+        return ResponseEntity
+                .ok(articles);
+    }
+
 
 }
