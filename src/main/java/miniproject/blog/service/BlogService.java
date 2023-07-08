@@ -6,6 +6,7 @@ import miniproject.blog.dto.AddArticleRequest;
 import miniproject.blog.dto.UpdateArticleRequest;
 import miniproject.blog.repository.BlogRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -32,6 +33,8 @@ public class BlogService {
         blogRepository.deleteById(id);
     }
 
+
+    @Transactional
     public Article update(long id, UpdateArticleRequest request){
         Article article = blogRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found: " + id));

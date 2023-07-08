@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.PersistenceContext;
 import miniproject.blog.domain.Article;
 import miniproject.blog.dto.AddArticleRequest;
+import miniproject.blog.dto.UpdateArticleRequest;
 import miniproject.blog.repository.BlogRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -159,5 +160,45 @@ class BlogApiControllerTest {
 
 
     }
+
+
+    @DisplayName("findArticle: 블로그 글 업데이트에 성공한다.")
+    @Test
+    public void updateArticle() throws Exception {
+
+        //given
+        final String url = "/api/articles/{id}";
+        final String title = "title";
+        final String content = "content";
+
+        Article savedArticle = blogRepository.save(Article.builder()
+                .title(title)
+                .content(content)
+                .build());
+
+        final String newTitle = "new title";
+        final String newContent = "new content";
+
+        UpdateArticleRequest request = new UpdateArticleRequest(newTitle, newContent);
+
+
+        //when
+        final ResultActions resultActions = mockMvc.perform(put(url, savedArticle.getId())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(request)));
+
+        //then
+        resultActions.andExpect(status().isOk());
+
+        Article article = blogRepository.findById(savedArticle.getId()).get();
+
+        assertThat(article.getTitle()).isEqualTo("new title");
+        assertThat(article.getContent()).isEqualTo("new content");
+
+
+    }
+
+
+
 
 }
