@@ -46,7 +46,7 @@ public class BlogApiController {
     }
 
 
-    @GetMapping("/api/articles/{id}")
+    @DeleteMapping("/api/articles/{id}")
     public ResponseEntity<Void> deleteArticle(@PathVariable long id){
         blogService.delete(id);
         return ResponseEntity.ok()
