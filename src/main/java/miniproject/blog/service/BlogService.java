@@ -3,6 +3,7 @@ package miniproject.blog.service;
 import lombok.RequiredArgsConstructor;
 import miniproject.blog.domain.Article;
 import miniproject.blog.dto.AddArticleRequest;
+import miniproject.blog.dto.UpdateArticleRequest;
 import miniproject.blog.repository.BlogRepository;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,14 @@ public class BlogService {
 
     public void delete(long id){
         blogRepository.deleteById(id);
+    }
+
+    public Article update(long id, UpdateArticleRequest request){
+        Article article = blogRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("not found: " + id));
+        article.update(request.getTitle(),request.getContent());
+
+        return article;
     }
 
 
