@@ -62,12 +62,19 @@ public class TokenProvider {
                 claims.getSubject(),"",authorities),token,authorities);
     }
 
+
+    public Long getUserId(String token) {
+        Claims claims = getClaims(token);
+        return claims.get("id",Long.class);
+    }
+
     private Claims getClaims(String token) {
         return Jwts.parser()
                 .setSigningKey(jwtProperties.getSecretKey())
                 .parseClaimsJws(token)
                 .getBody();
     }
+
 
 
 }
