@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
+
 @RequiredArgsConstructor
 @Configuration
 public class WebSecurityConfig {
@@ -52,6 +54,7 @@ public class WebSecurityConfig {
                                                        BCryptPasswordEncoder bCryptPasswordEncoder,
                                                        UserDetailService userDetailService)
         throws Exception{
+
 
         return http.getSharedObject(AuthenticationManagerBuilder.class)
                 .userDetailsService(userService)
