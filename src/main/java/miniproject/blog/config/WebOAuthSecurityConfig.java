@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import miniproject.blog.config.jwt.TokenAuthenticationFilter;
 import miniproject.blog.config.jwt.TokenProvider;
 import miniproject.blog.config.oauth.OAuth2AuthorizationRequestBasedOnCookieRepository;
+import miniproject.blog.config.oauth.OAuth2SuccessHandler;
 import miniproject.blog.repository.RefreshTokenRepository;
 import miniproject.blog.service.UserService;
 import org.springframework.context.annotation.Bean;
@@ -62,7 +63,7 @@ public class WebOAuthSecurityConfig {
                 .and()
                 .successHandler(oAuth2SuccessHandler())
                 .userInfoEndpoint()
-                .userService(oAuth2UserCustomService)'
+                .userService(oAuth2UserCustomService);
 
         http.logout()
             .logoutSuccessUrl("/login");
@@ -74,6 +75,14 @@ public class WebOAuthSecurityConfig {
         return http.build();
     }
 
+
+    @Bean
+    public OAuth2SuccessHandler oAuth2SuccessHandler(){
+        return new OAuth2SuccessHandler(tokenProvider,
+                refreshTokenRepository,
+                oAuth2AuthorizationRequestBasedOnCookieRepository(),
+                userService);
+    }
 
     private TokenAuthenticationFilter tokenAuthenticationFilter() {
         return new TokenAuthenticationFilter(tokenProvider);
