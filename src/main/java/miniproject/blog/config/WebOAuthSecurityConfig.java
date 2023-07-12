@@ -2,7 +2,9 @@ package miniproject.blog.config;
 
 import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
+import miniproject.blog.config.jwt.TokenAuthenticationFilter;
 import miniproject.blog.config.jwt.TokenProvider;
+import miniproject.blog.config.oauth.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import miniproject.blog.repository.RefreshTokenRepository;
 import miniproject.blog.service.UserService;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.web.SecurityFilterChain;
@@ -71,14 +74,24 @@ public class WebOAuthSecurityConfig {
         return http.build();
     }
 
-    private AuthenticationSuccessHandler oAuth2SuccessHandler() {
+
+    private TokenAuthenticationFilter tokenAuthenticationFilter() {
+        return new TokenAuthenticationFilter(tokenProvider);
     }
 
-    private AuthorizationRequestRepository<OAuth2AuthorizationRequest> oAuth2AuthorizationRequestBasedOnCookieRepository() {
+
+
+    private OAuth2AuthorizationRequestBasedOnCookieRepository oAuth2AuthorizationRequestBasedOnCookieRepository() {
+        return new OAuth2AuthorizationRequestBasedOnCookieRepository();
     }
 
-    private Filter tokenAuthenticationFilter() {
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder(){
+        return new BCryptPasswordEncoder();
     }
+
+
+
 
 
 }
