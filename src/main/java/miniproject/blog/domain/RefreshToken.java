@@ -22,7 +22,7 @@ public class RefreshToken {
     private String refreshToken;
 
     public RefreshToken(Long id, String refreshToken) {
-        this.id = id;
+        this.userId = id;
         this.refreshToken = refreshToken;
     }
 

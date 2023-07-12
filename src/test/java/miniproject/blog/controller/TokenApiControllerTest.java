@@ -32,10 +32,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class TokenApiControllerTest {
 
-    @PersistenceContext
+    @Autowired
     protected MockMvc mockMvc;
 
-    @PersistenceContext
+    @Autowired
     protected ObjectMapper obejcetMapper;
 
     @Autowired
@@ -74,6 +74,8 @@ public class TokenApiControllerTest {
                 .claims(Map.of("id",testUser.getId()))
                 .build()
                 .createToken(jwtProperties);
+
+        System.out.println("testUser : " + testUser.getId());
 
         refreshTokenRepository.save(new RefreshToken(testUser.getId(),refreshToken));
 
