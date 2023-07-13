@@ -1,6 +1,5 @@
 package miniproject.blog.config;
 
-import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import miniproject.blog.config.jwt.TokenAuthenticationFilter;
 import miniproject.blog.config.jwt.TokenProvider;
@@ -15,10 +14,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
-import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -37,7 +33,7 @@ public class WebOAuthSecurityConfig {
     public WebSecurityCustomizer configure(){
         return (web) ->web.ignoring()
                 .requestMatchers(toH2Console())
-                .requestMatchers("/img/**","/css/**","/js/**");
+                .requestMatchers("/static/img/**","/css/**","/js/**");
     }
 
     @Bean
