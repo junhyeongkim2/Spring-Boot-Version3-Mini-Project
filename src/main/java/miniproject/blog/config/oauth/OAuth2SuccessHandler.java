@@ -40,6 +40,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         User user = userService.findByEmail((String) oAuth2User.getAttributes().get("email"));
 
         String refreshToken = tokenProvider.generateToken(user,REFRESH_TOKEN_DURATION);
+        System.out.println("cookiecheck " + refreshToken);
         saveRefreshToken(user.getId(),refreshToken);
         addRefreshTokenToCookie(request,response,refreshToken);
 
@@ -54,8 +55,10 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     private void saveRefreshToken(Long userId, String newRefreshToken) {
         RefreshToken refreshToken = refreshTokenRepository.findByUserId(userId)
-                .map(entity->entity.update(newRefreshToken))
                 .orElse(new RefreshToken(userId,newRefreshToken));
+        refreshTokenRepository.save(new RefreshToken(userId,newRefreshToken));
+        refreshToken.update(newRefreshToken);
+
     }
     private void addRefreshTokenToCookie(HttpServletRequest request, HttpServletResponse response, String refreshToken) {
         int cookieMaxAge = (int) REFRESH_TOKEN_DURATION.toSeconds();

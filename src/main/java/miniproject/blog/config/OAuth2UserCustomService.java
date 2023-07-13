@@ -34,7 +34,7 @@ public class OAuth2UserCustomService extends DefaultOAuth2UserService {
                         .email(email)
                         .nickname(name)
                         .build());
-        return user;
+        return userRepository.save(user);
 
     }
 
